@@ -53,22 +53,17 @@ resource "aws_iam_role_policy_attachment" "lambda" {
   policy_arn = aws_iam_policy.write_to_data_lake.arn
 }
 
-resource "random_pet" "bbc_to_s3_lambda_name" {}
+resource "random_pet" "rss_to_s3_lambda_name" {}
 
-resource "aws_lambda_function" "bbc_to_s3" {
-  function_name    = random_pet.bbc_to_s3_lambda_name.id
-  filename         = "functions/bbc-to-s3/dist/package.zip"
+resource "aws_lambda_function" "rss_to_s3" {
+  function_name    = random_pet.rss_to_s3_lambda_name.id
+  filename         = "functions/rss-to-s3/dist/package.zip"
   role             = aws_iam_role.lambda.arn
   handler          = "index.handler"
-  source_code_hash = filebase64sha256("functions/bbc-to-s3/dist/package.zip")
+  source_code_hash = filebase64sha256("functions/rss-to-s3/dist/package.zip")
   runtime          = "nodejs12.x"
   depends_on = [
     aws_iam_role_policy_attachment.lambda,
     aws_s3_bucket.data_lake
   ]
-  environment {
-    variables = {
-      "DATA_LAKE_BUCKET" = aws_s3_bucket.data_lake.id
-    }
-  }
 }

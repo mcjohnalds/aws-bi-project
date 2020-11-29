@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rss-to-s3 should write RSS data to S3 1`] = `"Covid: Nadhim Zahawi appointed as vaccine rollout minister"`;
