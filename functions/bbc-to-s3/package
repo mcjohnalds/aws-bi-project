@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+npm install
+npx tsc
+cp package.json dist
+cd dist
+npm install --only=production
+zip -r package.zip * &>/dev/null
