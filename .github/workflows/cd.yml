@@ -2,20 +2,35 @@ name: "CD"
 on:
   push:
     branches: ["main"]
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ap-southeast-2
+  AWS_REGION: ap-southeast-2
 jobs:
   cd:
     name: "CD"
     runs-on: ubuntu-latest
     steps:
-      - name:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: 12.x
       - run: ./package
         working-directory: functions/rss-to-s3
-      # - uses: hashicorp/setup-terraform@v1
-      # - run: terraform init
-      # - run: terraform fmt -check
-      # - run: terraform plan
-      # - run: terraform apply -auto-approve
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_wrapper: false
+      - run: terraform init
+      - run: terraform fmt -check
+      - run: terraform apply -auto-approve
+      - run: npm install
+        working-directory: functions/rss-to-s3
+      - name: Run rss-to-s3 tests
+        run: npx jest --ci
+        working-directory: functions/rss-to-s3
+      - run: npm install
+        working-directory: e2e-tests
+      - name: Run E2E tests
+        run: npx jest --ci
+        working-directory: e2e-tests
