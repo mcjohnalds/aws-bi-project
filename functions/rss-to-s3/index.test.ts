@@ -3,10 +3,15 @@ import AWS from "aws-sdk";
 import ServerMock from "mock-http-server";
 import { promises as fs } from "fs";
 import { promisify } from "util";
+import { execSync } from "child_process";
+
+const terraformOutput = JSON.parse(
+  execSync("terraform output -json", { cwd: "../.." }).toString("utf-8")
+);
 
 const event = {
   url: "http://localhost:9000/rss.xml",
-  bucket: process.env.BUCKET_NAME!,
+  bucket: terraformOutput.data_lake_bucket_name.value,
   keyPrefix: "rss-",
 };
 
@@ -33,7 +38,7 @@ describe("rss-to-s3", () => {
     const s3 = new AWS.S3();
     const object = await s3
       .getObject({
-        Bucket: process.env.BUCKET_NAME!,
+        Bucket: terraformOutput.data_lake_bucket_name.value,
         Key: result.key,
       })
       .promise();

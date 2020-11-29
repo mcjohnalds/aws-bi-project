@@ -1,13 +1,18 @@
 import AWS from "aws-sdk";
+import { execSync } from "child_process";
+
+const terraformOutput = JSON.parse(
+  execSync("terraform output -json", { cwd: ".." }).toString("utf-8")
+);
 
 it("should put BBC data into bucket", async () => {
   const lambda = new AWS.Lambda();
   const result = await lambda
     .invoke({
-      FunctionName: process.env.RSS_TO_S3_FUNCTION_NAME!,
+      FunctionName: terraformOutput.rss_to_s3_function_name.value,
       Payload: JSON.stringify({
         url: "https://feeds.bbci.co.uk/news/uk/rss.xml",
-        bucket: process.env.DATA_LAKE_BUCKET_NAME!,
+        bucket: terraformOutput.data_lake_bucket_name.value,
         keyPrefix: "bbc-",
       }),
     })
@@ -18,7 +23,7 @@ it("should put BBC data into bucket", async () => {
   const s3 = new AWS.S3();
   const object = await s3
     .getObject({
-      Bucket: process.env.DATA_LAKE_BUCKET_NAME!,
+      Bucket: terraformOutput.data_lake_bucket_name.value,
       Key: key,
     })
     .promise();
