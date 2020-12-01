@@ -6,8 +6,8 @@ const feedToCsv = (feed: Parser.Output): string => {
   const items = feed.items || [];
   const input = items
     .filter((item) => item.title)
-    .map((item) => ({ title: item.title }));
-  return parse(input, { fields: ["title"] });
+    .map((item) => ({ title: item.title, timestamp: item.isoDate }));
+  return parse(input, { fields: ["title", "timestamp"] });
 };
 
 export default feedToCsv;
