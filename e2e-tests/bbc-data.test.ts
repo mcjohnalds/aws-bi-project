@@ -20,7 +20,7 @@ it("should put BBC data into bucket", async () => {
   if (rows.length < 10) {
     throw new Error(`CSV is too short:\n\n${csv}`);
   }
-  if (!isBbcCsvColumnsValid(csv)) {
+  if (typeof rows[0].title !== "string" || rows[0].title === "") {
     throw new Error(`CSV columns are invalid:\n\n${csv}`);
   }
 });
@@ -54,9 +54,3 @@ const getFileFromDataLake = async (key: string): Promise<Buffer> => {
     .promise();
   return object.Body as Buffer;
 };
-
-// Returns true if the input is in the format we expected from the BBC CSV data.
-const isBbcCsvColumnsValid = (csv: string): boolean =>
-  parse(csv, { columns: true }).every(
-    (row: any) => typeof row.title === "string" && Object.keys(row).length === 1
-  );
