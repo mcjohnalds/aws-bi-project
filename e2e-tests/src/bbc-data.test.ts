@@ -11,6 +11,7 @@ it("should put BBC data into bucket", async () => {
   const buffer = await getFileFromDataLake(key);
   const csv = buffer.toString("utf-8");
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let rows: any[];
   try {
     rows = parse(csv, { columns: true });
@@ -39,7 +40,10 @@ const bbcToS3 = async (): Promise<string> => {
       }),
     })
     .promise();
-  const key = JSON.parse(result.Payload!.toString("utf-8")).key;
+  if (!result.Payload) {
+    throw new Error("Payload was empty");
+  }
+  const key = JSON.parse(result.Payload.toString("utf-8")).key;
   return key;
 };
 
