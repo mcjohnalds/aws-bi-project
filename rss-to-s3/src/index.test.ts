@@ -12,7 +12,7 @@ const terraformOutput = JSON.parse(
 const event = {
   url: "http://localhost:9000/rss.xml",
   bucket: terraformOutput.data_lake_bucket_name.value,
-  keyPrefix: "rss-",
+  keyPrefix: "rss-to-s3-test/",
 };
 
 const server = new ServerMock({ host: "localhost", port: 9000 });
@@ -53,7 +53,7 @@ describe("rss-to-s3", () => {
 
   it("should add a prefix the object key", async () => {
     const result = await handler(event);
-    expect(result.key).toMatch(/^rss-/);
+    expect(result.key).toMatch(/^rss-to-s3-test\//);
   });
 
   it("should add a csv suffix the object key", async () => {
