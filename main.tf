@@ -57,10 +57,10 @@ resource "random_pet" "rss_to_s3_lambda_name" {}
 
 resource "aws_lambda_function" "rss_to_s3" {
   function_name    = random_pet.rss_to_s3_lambda_name.id
-  filename         = "functions/rss-to-s3/dist/package.zip"
+  filename         = "rss-to-s3/dist/package.zip"
   role             = aws_iam_role.lambda.arn
   handler          = "index.handler"
-  source_code_hash = filebase64sha256("functions/rss-to-s3/dist/package.zip")
+  source_code_hash = filebase64sha256("rss-to-s3/dist/package.zip")
   runtime          = "nodejs12.x"
   depends_on = [
     aws_iam_role_policy_attachment.lambda,

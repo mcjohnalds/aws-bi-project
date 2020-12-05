@@ -3,7 +3,7 @@ set -e
 
 terraform fmt -check
 
-pushd functions/rss-to-s3
+pushd rss-to-s3
 npm install
 npm run lint
 popd

@@ -6,7 +6,7 @@ import { promisify } from "util";
 import { execSync } from "child_process";
 
 const terraformOutput = JSON.parse(
-  execSync("terraform output -json", { cwd: "../.." }).toString("utf-8")
+  execSync("terraform output -json", { cwd: ".." }).toString("utf-8")
 );
 
 const event = {
