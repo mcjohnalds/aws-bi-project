@@ -53,7 +53,12 @@ describe("rss-to-s3", () => {
 
   it("should add a prefix the object key", async () => {
     const result = await handler(event);
-    expect(result.key).toMatch("rss-");
+    expect(result.key).toMatch(/^rss-/);
+  });
+
+  it("should add a csv suffix the object key", async () => {
+    const result = await handler(event);
+    expect(result.key).toMatch(/.csv$/);
   });
 
   it("should write to a different object on every invocation", async () => {

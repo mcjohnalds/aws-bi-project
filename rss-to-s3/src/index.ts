@@ -18,7 +18,7 @@ export const handler = async (event: Event): Promise<Result> => {
   const feed = await parser.parseURL(event.url);
   const csv = feedToCsv(feed);
   const s3 = new AWS.S3();
-  const key = `${event.keyPrefix}${uuidv4()}`;
+  const key = `${event.keyPrefix}${uuidv4()}.csv`;
   await s3.putObject({ Bucket: event.bucket, Key: key, Body: csv }).promise();
   return { key };
 };
