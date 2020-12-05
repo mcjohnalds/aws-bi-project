@@ -42,7 +42,12 @@ describe("rss-to-s3", () => {
         Key: result.key,
       })
       .promise();
-    const data = object.Body!.toString("utf-8");
+
+    if (!object.Body) {
+      throw new Error("object body was empty");
+    }
+
+    const data = object.Body.toString("utf-8");
     expect(data).toMatchSnapshot();
   });
 
