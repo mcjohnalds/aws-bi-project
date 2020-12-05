@@ -36,7 +36,7 @@ const bbcToS3 = async (): Promise<string> => {
       Payload: JSON.stringify({
         url: "https://feeds.bbci.co.uk/news/uk/rss.xml",
         bucket: terraformOutput.data_lake_bucket_name.value,
-        keyPrefix: "bbc-",
+        keyPrefix: "bbc/",
       }),
     })
     .promise();
