@@ -2,7 +2,6 @@
   "name": "rss-to-s3",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "jest --watch",
     "build": "./build"
