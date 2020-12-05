@@ -2,9 +2,9 @@
   "name": "tests",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "lint": "prettier --check src"
   },
   "keywords": [],
   "author": "",

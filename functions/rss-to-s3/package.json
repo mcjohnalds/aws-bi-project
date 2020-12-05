@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "test": "jest --watch",
-    "build": "./build"
+    "build": "./build",
+    "lint": "prettier --check src"
   },
   "keywords": [],
   "author": "",

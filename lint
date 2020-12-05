@@ -1,3 +1,14 @@
 #!/bin/bash
 set -e
+
 terraform fmt -check
+
+pushd functions/rss-to-s3
+npm install
+npm run lint
+popd
+
+pushd e2e-tests
+npm install
+npm run lint
+popd
