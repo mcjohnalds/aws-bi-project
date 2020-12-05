@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-npm install
 npx tsc
 cp package.json dist
 cd dist

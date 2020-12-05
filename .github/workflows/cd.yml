@@ -1,4 +1,4 @@
-name: "CD"
+name: CD
 on:
   push:
     branches: ["main"]
@@ -9,28 +9,18 @@ env:
   AWS_REGION: ap-southeast-2
 jobs:
   cd:
-    name: "CD"
+    name: CD
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - run: ./package
-        working-directory: functions/rss-to-s3
       - uses: hashicorp/setup-terraform@v1
         with:
+          # The terraform_wrapper default (true) breaks everything somehow
           terraform_wrapper: false
-      - run: terraform init
-      - run: terraform fmt -check
-      - run: terraform apply -auto-approve
-      - run: npm install
-        working-directory: functions/rss-to-s3
-      - name: Run rss-to-s3 tests
-        run: npx jest --ci
-        working-directory: functions/rss-to-s3
-      - run: npm install
-        working-directory: e2e-tests
-      - name: Run E2E tests
-        run: npx jest --ci
-        working-directory: e2e-tests
+      - run: ./lint
+      - run: ./build
+      - run: ./deploy
+      - run: ./test

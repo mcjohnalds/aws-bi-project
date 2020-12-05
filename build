@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+pushd functions/rss-to-s3
+npm install
+npm run build
+popd
