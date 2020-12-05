@@ -18,6 +18,7 @@ jobs:
           node-version: 12.x
       - uses: hashicorp/setup-terraform@v1
         with:
+          terraform_version: v0.14.x
           # The terraform_wrapper default (true) breaks everything somehow
           terraform_wrapper: false
       - run: ./lint
