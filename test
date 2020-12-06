@@ -6,6 +6,11 @@ npm install
 npx jest --ci
 popd
 
+pushd athena
+npm install
+npx jest --ci
+popd
+
 pushd e2e-tests
 npm install
 npx jest --ci

@@ -67,3 +67,36 @@ resource "aws_lambda_function" "rss_to_s3" {
     aws_s3_bucket.data_lake
   ]
 }
+
+resource "aws_glue_catalog_database" "main" {
+  name = "aws_bi_project"
+}
+
+resource "aws_glue_catalog_table" "bbc" {
+  name          = "bbc"
+  database_name = aws_glue_catalog_database.main.name
+  parameters = {
+    EXTERNAL = "TRUE"
+  }
+  storage_descriptor {
+    location      = "s3://${aws_s3_bucket.data_lake.id}/bbc/"
+    input_format  = "org.apache.hadoop.mapred.TextInputFormat"
+    output_format = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
+    ser_de_info {
+      name                  = "hello"
+      serialization_library = "org.apache.hadoop.hive.serde2.OpenCSVSerde"
+      parameters = {
+        "separatorChar"          = ","
+        "skip.header.line.count" = "1"
+      }
+    }
+    columns {
+      name = "title"
+      type = "string"
+    }
+    columns {
+      name = "date"
+      type = "string"
+    }
+  }
+}

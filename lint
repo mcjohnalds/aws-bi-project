@@ -8,6 +8,11 @@ npm install
 npm run lint
 popd
 
+pushd athena
+npm install
+npm run lint
+popd
+
 pushd e2e-tests
 npm install
 npm run lint
