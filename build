@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
+
 pushd rss-to-s3
 npm install
-npm run build
 popd

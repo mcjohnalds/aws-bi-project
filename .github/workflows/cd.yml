@@ -21,6 +21,7 @@ jobs:
           terraform_version: v0.14.x
           # The terraform_wrapper default (true) breaks everything somehow
           terraform_wrapper: false
+      - run: ./install-dependencies
       - run: ./lint
       - run: ./build
       - run: ./deploy

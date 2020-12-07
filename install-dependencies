@@ -1,16 +1,16 @@
 #!/bin/bash
 set -e
 
-terraform fmt -check
-
 pushd rss-to-s3
-npm run lint
+npm install
 popd
 
 pushd athena
-npm run lint
+npm install
 popd
 
 pushd e2e-tests
-npm run lint
+npm install
 popd
+
+terraform init
