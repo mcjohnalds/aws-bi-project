@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+cleanup() {
+  docker rm -f aws-bi-project-presto >/dev/null
+}
+
+trap cleanup EXIT
+docker run -d -p 8080:8080 --name aws-bi-project-presto prestosql/presto >/dev/null
+sleep 30
+npx jest --runInBand $@

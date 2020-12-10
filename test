@@ -6,7 +6,7 @@ npx jest --ci
 popd
 
 pushd athena
-npx jest --ci
+./test --ci
 popd
 
 pushd e2e-tests
