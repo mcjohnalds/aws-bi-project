@@ -26,6 +26,8 @@ const queryPresto = (sql: string): Promise<unknown[]> =>
 // returns
 // [{x: 1, y: 2}]
 const rowToObject = (row: unknown[], columns: Column[]) =>
-  Object.assign(...row.map((x, i) => ({ [columns[i].name]: x })), {});
+  // We need "as any" because of a bug in TS
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (Object.assign as any)(...row.map((x, i) => ({ [columns[i].name]: x })), {});
 
 export default queryPresto;

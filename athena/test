@@ -6,6 +6,7 @@ cleanup() {
 }
 
 trap cleanup EXIT
-docker run -d -p 8080:8080 --name aws-bi-project-presto prestosql/presto >/dev/null
+docker run -d -p 8080:8080 --name aws-bi-project-presto \
+  prestosql/presto:347 >/dev/null
 sleep 30
 npx jest --runInBand $@
