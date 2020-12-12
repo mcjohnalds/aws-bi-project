@@ -9,14 +9,16 @@ const client = new presto.Client({ user: "test" });
 
 const queryPresto = (sql: string): Promise<unknown[]> =>
   new Promise((resolve, reject) => {
-    const allRows = [] as unknown[];
+    let allRows = [] as unknown[];
     client.execute({
       query: sql,
       catalog: "memory",
       schema: "default",
       source: "nodejs-client",
       data: (_error: Error, rows: unknown[][], columns: Column[]) =>
-        allRows.push(rows.map((row) => rowToObject(row, columns))),
+        (allRows = allRows.concat(
+          rows.map((row) => rowToObject(row, columns))
+        )),
       success: () => resolve(allRows),
       error: reject,
     });

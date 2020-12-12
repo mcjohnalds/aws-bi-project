@@ -9,10 +9,8 @@ describe("queryPresto", () => {
     await queryPresto("insert into dogs values ('rex', 3), ('molly', 10)");
     const results = await queryPresto("select * from dogs");
     expect(results).toEqual([
-      [
-        { name: "rex", age: 3 },
-        { name: "molly", age: 10 },
-      ],
+      { name: "rex", age: 3 },
+      { name: "molly", age: 10 },
     ]);
   });
 });
