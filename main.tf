@@ -100,3 +100,39 @@ resource "aws_glue_catalog_table" "bbc" {
     }
   }
 }
+
+resource "null_resource" "athena_views" {
+  for_each = {
+    for filename in fileset("athena/src/", "*.sql") :
+    replace(filename, ".sql", "") => file("athena/src/${filename}")
+  }
+
+  triggers = {
+    md5      = md5(each.value)
+    database = aws_glue_catalog_database.main.name
+    bucket   = aws_s3_bucket.data_lake.id
+  }
+
+  provisioner "local-exec" {
+    command = <<EOF
+      aws athena start-query-execution \
+        --output json \
+        --query-string "CREATE OR REPLACE VIEW ${each.key} AS ${each.value}" \
+        --query-execution-context "Database=${self.triggers.database}" \
+        --result-configuration "OutputLocation=s3://${self.triggers.bucket}/athena" \
+      >/dev/null
+    EOF
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = <<EOF
+      aws athena start-query-execution \
+        --output json \
+        --query-string "DROP VIEW IF EXISTS ${each.key}" \
+        --query-execution-context "Database=${self.triggers.database}" \
+        --result-configuration "OutputLocation=s3://${self.triggers.bucket}/athena" \
+      >/dev/null
+    EOF
+  }
+}

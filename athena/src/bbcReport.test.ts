@@ -13,10 +13,9 @@ describe("createBBCReport", () => {
       ('bar', '2020-01-02T01:01:01.000Z')`
     );
 
-    const sql = await fs.readFile("src/createBBCReport.sql", "utf-8");
-    await queryPresto(sql);
+    const sql = await fs.readFile("src/bbcReport.sql", "utf-8");
+    const rows = await queryPresto(sql);
 
-    const rows = await queryPresto("select * from bbc_report order by date");
     // Note that there are no duplicates and that the timestamps have been
     // converted to dates
     expect(rows).toEqual([
