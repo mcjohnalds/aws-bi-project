@@ -14,7 +14,6 @@ const queryPresto = (sql: string): Promise<unknown[]> =>
       query: sql,
       catalog: "memory",
       schema: "default",
-      source: "nodejs-client",
       data: (_error: Error, rows: unknown[][], columns: Column[]) =>
         (allRows = allRows.concat(
           rows.map((row) => rowToObject(row, columns))
