@@ -95,7 +95,7 @@ resource "aws_glue_catalog_table" "bbc" {
       type = "string"
     }
     columns {
-      name = "date"
+      name = "isoDate"
       type = "string"
     }
   }
